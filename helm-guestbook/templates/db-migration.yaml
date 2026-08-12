@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migration
+  annotations:
+    argocd.argoproj.io/hook: PreSync 
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation, HookSucceeded
+spec:
+    template:
+        spec:
+            restartPolicy: Never
+            containers:
+            - name: migration
+              image: busybox
+              command:
+                - "sh"
+                - "-c"
+                - "echo 'Running database migration...'; sleep 10; echo 'Database migration completed'"
+
